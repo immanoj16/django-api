@@ -39,7 +39,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 
     class Meta(object):
         model = User
-        fields = ['username', 'email', 'password', 'password_2', 'first_name', 'last_name']
+        fields = ['username', 'first_name', 'last_name', 'email', 'password', 'password_2']
 
     def validate_email(self, value):
         if User.objects.filter(email=value).exists():
@@ -69,17 +69,16 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 
         user_data = {
             'username': validated_data.get('username'),
+            'first_name': validated_data.get('first_name'),
+            'last_name': validated_data.get('last_name'),
             'email': validated_data.get('email'),
             'password': validated_data.get('password'),
-            'first_name': validated_data.get('first_name'),
-            'last_name': validated_data.get('last_name')
         }
 
         UserProfile.objects.create_user_profile(
             data=user_data,
             is_active=True,
-            site=get_current_site(self.context['request']),
-            send_email=True
+            site=get_current_site(self.context['request'])
         )
 
         return validated_data

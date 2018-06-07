@@ -1,12 +1,11 @@
 from django.conf.urls import url
+from rest_framework_jwt.views import obtain_jwt_token
 
 from . import views
 
 urlpatterns = [
 
-    url(r'^login/$',
-        views.UserLoginAPIView.as_view(),
-        name='login'),
+    url(r'^login/$', obtain_jwt_token),
 
     url(r'^register/$',
         views.UserRegistrationAPIView.as_view(),

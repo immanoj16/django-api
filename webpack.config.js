@@ -1,4 +1,7 @@
 module.exports = {
+  devServer: {
+    historyApiFallback: true
+  },
   module: {
     rules: [
       {
@@ -7,6 +10,19 @@ module.exports = {
         use: {
           loader: "babel-loader"
         }
+      },
+      {
+        test: /\.css?$/,
+        use: [
+          { loader: 'style-loader' },
+          {
+            loader: 'css-loader',
+            options: {
+              modules: true,
+              localIdentName: '[path][name]_[local]_[hash:base64:5]'
+            }
+          }
+        ]
       }
     ]
   }

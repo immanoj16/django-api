@@ -1,19 +1,8 @@
-import re
-import hashlib
-import datetime
-
 from django.conf import settings
 from django.db import models, transaction
 from django.contrib.auth import get_user_model
-from django.utils.crypto import get_random_string
-from django.utils import timezone
-from django.contrib.auth.tokens import default_token_generator
 
 User = get_user_model()
-
-token_generator = default_token_generator
-
-SHA1_RE = re.compile('^[a-f0-9]{40}$')
 
 
 class UserProfileRegistrationManager(models.Manager):
@@ -23,7 +12,6 @@ class UserProfileRegistrationManager(models.Manager):
     The methods defined here provide shortcuts for user profile creation
     and activation (including generation and emailing of activation
     keys), and for cleaning out expired inactive accounts.
-
     """
 
     @transaction.atomic
@@ -51,13 +39,8 @@ class UserProfileRegistrationManager(models.Manager):
 
         """
 
-        username = str(getattr(user, User.USERNAME_FIELD))
-        hash_input = (get_random_string(5) + username).encode('utf-8')
-        verification_key = hashlib.sha1(hash_input).hexdigest()
-
         self.create(
-            user=user,
-            verification_key=verification_key
+            user=user
         )
 
 

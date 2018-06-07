@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model
 from rest_framework import generics, permissions, status, views
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.response import Response
+from django.views.decorators.csrf import csrf_protect
 
 from . import serializers
 
@@ -17,7 +18,13 @@ class UserRegistrationAPIView(generics.CreateAPIView):
     serializer_class = serializers.UserRegistrationSerializer
     queryset = User.objects.all()
 
+    def retrieve(self, request, pk=None):
+        if pk == 'i':
+            return Response(serializers.UserRegistrationSerializer(request.user, context={'request': request}).data)
+        return super(UserRegistrationAPIView, self).retrieve(request, pk)
 
+
+@csrf_protect
 class UserLoginAPIView(views.APIView):
     """
     Endpoint for user login. Returns authentication token on success.

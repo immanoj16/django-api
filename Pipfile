@@ -9,6 +9,7 @@ name = "pypi"
 django = "*"
 djangorestframework = "*"
 pillow = "*"
+djangorestframework-jwt = "*"
 
 [requires]
 python_version = "3.6"
